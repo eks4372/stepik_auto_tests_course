@@ -12,7 +12,7 @@ def main():
         browser = webdriver.Chrome()
         browser.get(link)
 
-        # Ваш код, который заполняет обязательные поля
+        # Ваш код
         WebDriverWait(browser, 15).until(
             EC.text_to_be_present_in_element((By.ID, "price"), "100")
         )
@@ -27,5 +27,7 @@ def main():
         time.sleep(10)
         # закрываем браузер после всех манипуляций
         browser.quit()
+
+
 if __name__ == '__main__':
     main()
