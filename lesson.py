@@ -4,7 +4,7 @@ import time
 
 
 # link = "http://suninjuly.github.io/registration1.html"
-def registrstion(link):
+def registration(link):
     browser = webdriver.Chrome()
     browser.get(link)
 
@@ -31,5 +31,5 @@ def registrstion(link):
 # assert "Congratulations! You have successfully registered!" == welcome_text
 
 
-# print(registrstion('http://suninjuly.github.io/registration1.html'))
+# print(registration('http://suninjuly.github.io/registration1.html'))
 
