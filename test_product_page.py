@@ -2,6 +2,7 @@ import time
 
 from .pages.product_page import ShopPage
 import pytest
+from .pages.login_page import LoginPage
 
 
 # link = "http://selenium1py.pythonanywhere.com/catalogue/the-shellcoders-handbook_209/?promo=newYear"
@@ -23,7 +24,7 @@ def test_guest_can_add_to_basket(browser, link):
     page = ShopPage(browser, link)
     page.open()
     page.add_to_basket()
-    time.sleep(150)
+    # time.sleep(150)
     data = page.entering_in_basket()
     assert data[2] == data[0], 'купленной книги нет в корзине'
     assert data[3] == data[1], 'не верная цена книги'
@@ -55,15 +56,52 @@ def test_message_disappeared_after_adding_product_to_basket(browser, link):
     page.should_be_success_message()
 
 
-def test_guest_should_see_login_link_on_product_page(browser):
-    link = "http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/"
-    page = ShopPage(browser, link)
-    page.open()
-    page.should_be_login_link()
+@pytest.mark.parametrize('link',
+                         ['http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=newYear2019'])
+class TestUserAddToBasketFromProductPage():
+    @pytest.fixture(scope="function", autouse=True)
+    def setup(self, browser, link):
+        login_page = LoginPage(browser, link)
+        login_page.open()
+        login_page.register_new_user(str(time.time()) + "@fakemail.org", 'P@ssw0rd!!')
+        login_page.should_be_authorized_user()
+
+    def test_user_cant_see_success_message(self, browser, link):
+        page = ShopPage(browser, link)
+        page.open()
+        page.should_not_be_success_message()
+
+    def test_user_can_add_to_basket(self, browser, link):
+        page = ShopPage(browser, link)
+        page.open()
+        page.add_to_basket()
+        # time.sleep(150)
+        data = page.entering_in_basket()
+        assert data[2] == data[0], 'купленной книги нет в корзине'
+        assert data[3] == data[1], 'не верная цена книги'
 
 
-def test_guest_can_go_to_login_page_from_product_page(browser):
-    link = "http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/"
-    page = ShopPage(browser, link)
-    page.open()
-    page.go_to_login_page()
+@pytest.mark.login_guest  # pytest -m login_guest test_product_page.py
+class TestLoginFromMainPage():
+    # @pytest.fixture(scope="function", autouse=True)
+    # def setup(self):
+    #     self.product = ProductFactory(title="Best book created by robot")
+    #     # создаем по апи
+    #     self.link = self.product.link
+    #     yield
+    #     # после этого ключевого слова начинается teardown
+    #     # выполнится после каждого теста в классе
+    #     # удаляем те данные, которые мы создали
+    #     self.product.delete()
+
+    def test_guest_should_see_login_link_on_product_page(self, browser):
+        link = "http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/"
+        page = ShopPage(browser, link)
+        page.open()
+        page.should_be_login_link()
+
+    def test_guest_can_go_to_login_page_from_product_page(self, browser):
+        link = "http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/"
+        page = ShopPage(browser, link)
+        page.open()
+        page.go_to_login_page()
