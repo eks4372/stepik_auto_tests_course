@@ -14,5 +14,7 @@ class LoginPageLocators():
 class ShoppingButtonBasket():
     BUTTON_LINK = (By.CLASS_NAME, 'btn-add-to-basket')
     BASKET_LINK = (By.CLASS_NAME, 'btn-cart')
-    BOOK_NAME = (By.CLASS_NAME, 'col-sm-4')
-    BOOK_PRICE = (By.CLASS_NAME, 'price_color')
+    BOOK_NAME_IN_BASKET = (By.CLASS_NAME, 'col-sm-4')
+    BOOK_PRICE_IN_BASKET = (By.CLASS_NAME, 'price_color')
+    BOOK_NAME = (By.CSS_SELECTOR, '.product_main h1')
+    BOOK_PRICE = (By.CSS_SELECTOR, '.product_main .price_color')

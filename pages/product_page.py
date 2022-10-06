@@ -10,9 +10,11 @@ class ShopPage(BasePage):
         BasePage.solve_quiz_and_get_code(self)
 
     def entering_in_basket(self):
-        self.browser.implicitly_wait(15)
+        self.browser.implicitly_wait(150)
+        shop_name = self.browser.find_element(*ShoppingButtonBasket.BOOK_NAME).text
+        shop_price = self.browser.find_element(*ShoppingButtonBasket.BOOK_PRICE).text
         basket = self.browser.find_element(*ShoppingButtonBasket.BASKET_LINK)
         basket.click()
-        book_name = self.browser.find_element(*ShoppingButtonBasket.BOOK_NAME).text
-        book_price = self.browser.find_element(*ShoppingButtonBasket.BOOK_PRICE).text
-        return book_name, book_price
+        book_name = self.browser.find_element(*ShoppingButtonBasket.BOOK_NAME_IN_BASKET).text
+        book_price = self.browser.find_element(*ShoppingButtonBasket.BOOK_PRICE_IN_BASKET).text
+        return book_name, book_price, shop_name, shop_price
