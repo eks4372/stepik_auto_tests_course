@@ -17,11 +17,13 @@ class LoginPageLocators():
 
 class ShoppingButtonBasket():
     BUTTON_LINK = (By.CLASS_NAME, 'btn-add-to-basket')
-    BASKET_LINK = (By.CLASS_NAME, 'btn-cart')
+    BASKET_LINK = (By.CSS_SELECTOR, '.btn-group .btn-default')
     BOOK_NAME_IN_BASKET = (By.CSS_SELECTOR, '.col-sm-4 a')
     BOOK_PRICE_IN_BASKET = (By.CSS_SELECTOR, '.col-sm-1 p')
     BOOK_NAME = (By.CSS_SELECTOR, '.product_main h1')
     BOOK_PRICE = (By.CSS_SELECTOR, '.product_main .price_color')
+    BASKET_ITEM = (By.CLASS_NAME, 'basket-items')
+    BASKET_INNER = (By.CSS_SELECTOR, '#content_inner a')
 
 
 class ProductPageLocators():

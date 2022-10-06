@@ -8,6 +8,7 @@ from .pages.login_page import LoginPage
 # link = "http://selenium1py.pythonanywhere.com/catalogue/the-shellcoders-handbook_209/?promo=newYear"
 # link = 'http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=newYear2019'
 
+@pytest.mark.need_review
 @pytest.mark.parametrize('link', ["http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer0",
                                   "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer1",
                                   "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer2",
@@ -20,14 +21,19 @@ from .pages.login_page import LoginPage
                                       marks=pytest.mark.xfail),
                                   "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer8",
                                   "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer9"])
-def test_guest_can_add_to_basket(browser, link):
+def test_guest_can_add_product_to_basket(browser, link):
     page = ShopPage(browser, link)
     page.open()
     page.add_to_basket()
-    # time.sleep(150)
-    data = page.entering_in_basket()
-    assert data[2] == data[0], 'купленной книги нет в корзине'
-    assert data[3] == data[1], 'не верная цена книги'
+
+
+@pytest.mark.need_review
+@pytest.mark.parametrize('link',
+                         ['http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=newYear2019'])
+def test_guest_cant_see_product_in_basket_opened_from_product_page(browser, link):
+    page = ShopPage(browser, link)
+    page.open()
+    page.review_basket()
 
 
 @pytest.mark.parametrize('link',
@@ -71,14 +77,11 @@ class TestUserAddToBasketFromProductPage():
         page.open()
         page.should_not_be_success_message()
 
-    def test_user_can_add_to_basket(self, browser, link):
+    @pytest.mark.need_review
+    def test_user_can_add_product_to_basket(self, browser, link):
         page = ShopPage(browser, link)
         page.open()
         page.add_to_basket()
-        # time.sleep(150)
-        data = page.entering_in_basket()
-        assert data[2] == data[0], 'купленной книги нет в корзине'
-        assert data[3] == data[1], 'не верная цена книги'
 
 
 @pytest.mark.login_guest  # pytest -m login_guest test_product_page.py
@@ -100,6 +103,7 @@ class TestLoginFromMainPage():
         page.open()
         page.should_be_login_link()
 
+    @pytest.mark.need_review
     def test_guest_can_go_to_login_page_from_product_page(self, browser):
         link = "http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/"
         page = ShopPage(browser, link)
